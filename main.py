@@ -30,6 +30,10 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
     
+class Classification(BaseModel):
+    category: str
+    entities: list[str]
+    needs_search: bool    
     
     
 @app.post("/chat",response_model=ChatResponse)
@@ -111,7 +115,35 @@ def chat_stream(msg: ChatRequest, client: Anthropic = Depends(get_llm)):
     return StreamingResponse(
         generate(),
         media_type = "text/plain"
-    )   
+    )
+    
+    
+@app.post("/classify")   
+def classify(msg: ChatRequest, client: Anthropic = Depends(get_llm)):
+    if not msg.text.strip():
+            raise HTTPException(
+                status_code=400,
+                detail="Message cannot be empty"
+            )
+    
+    res = client.messages.parse(
+        model="claude-haiku-4-5",
+        max_tokens=500,
+        system=
+            "You are a classifier for hebrew questions."
+             "Define a catagory such as work, health, housing, studies, finance, etc."
+             "entities are the main terms or  organizations mentioned in the question."
+             "need_search should be true if external or up-to-date information is needed to answer the question.",
+        messages=[
+            {
+                "role": "user",
+                "content": msg.text
+            }
+        ],
+        output_format=Classification
+    )
+    
+    return res.parsed_output
+    
         
-        
-
+    

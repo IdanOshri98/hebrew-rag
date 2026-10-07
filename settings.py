@@ -7,4 +7,3 @@ class Settings(BaseSettings):
     
 settings = Settings()
 
-print(bool(settings.anthropic_api_key))
