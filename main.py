@@ -160,11 +160,12 @@ def classify(msg: ChatRequest, req: Request, client: Anthropic = Depends(get_llm
     res = client.messages.parse(
         model="claude-haiku-4-5",
         max_tokens=500,
-        system=
-            "You are a classifier for hebrew questions."
-             "Define a catagory such as work, health, housing, studies, finance, etc."
-             "entities are the main terms or  organizations mentioned in the question."
-             "need_search should be true if external or up-to-date information is needed to answer the question.",
+        system=(
+            "Classify travel and culture questions. "
+            "Set category to one of: city, landmark, museum, culture, nature, other. "
+            "Extract the main places, people, or topics as entities. "
+            "Set needs_search to true if answering requires external or up-to-date information."
+        ),
         messages=[
             {
                 "role": "user",
