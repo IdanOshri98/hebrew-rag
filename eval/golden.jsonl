@@ -1,0 +1,20 @@
+{"question":"What was the Colosseum used for?","expected_urls":["https://en.wikipedia.org/?curid=49603"]}
+{"question":"Why is Trafalgar Square called that?","expected_urls":["https://en.wikipedia.org/?curid=62107"]}
+{"question":"What were the two main languages spoken in the Roman Empire?","expected_urls":["https://en.wikipedia.org/?curid=25507"]}
+{"question":"Do Tokyo's special wards each have their own mayor?","expected_urls":["https://en.wikipedia.org/?curid=30057"]}
+{"question":"Did the aquarium at Berlin Zoo open at the same time as the zoo?","expected_urls":["https://en.wikipedia.org/?curid=1005900"]}
+{"question":"Where did the first Nam Kee restaurant open in Amsterdam?","expected_urls":["https://en.wikipedia.org/?curid=33161563"]}
+{"question":"Which films set in Russia used the station that houses Madrid's Railway Museum as a filming location?","expected_urls":["https://en.wikipedia.org/?curid=18285493"]}
+{"question":"What was the Le Bal arts centre building used for before it became an arts centre?","expected_urls":["https://en.wikipedia.org/?curid=48349887"]}
+{"question":"How far back does the evidence of people living along the Thames go?","expected_urls":["https://en.wikipedia.org/?curid=49031"]}
+{"question":"Where are the competing short films shown at ShortCutz Amsterdam?","expected_urls":["https://en.wikipedia.org/?curid=45391623"]}
+{"question":"What does the name Alfama mean, and what language does it come from?","expected_urls":["https://en.wikipedia.org/?curid=18091"]}
+{"question":"Where in Madrid is the House of Architecture located?","expected_urls":["https://en.wikipedia.org/?curid=76743361"]}
+{"question":"When did the Musée Carnavalet reopen after its major renovation?","expected_urls":["https://en.wikipedia.org/?curid=2026598"]}
+{"question":"Which room at Buckingham Palace is used for state banquets?","expected_urls":["https://en.wikipedia.org/?curid=3969"]}
+{"question":"Which museum did the Royal Observatory in Greenwich become part of?","expected_urls":["https://en.wikipedia.org/?curid=43989"]}
+{"question":"I'm looking for things to do in Rome. What does the Romics festival focus on, and what was Palazzo Massimo used for before it became a museum?","expected_urls":["https://en.wikipedia.org/?curid=44307237","https://en.wikipedia.org/?curid=76411623"]}
+{"question":"I'm reading about the history of Paris museums. What did Paul Rivet put on the door of the Musée de l'Homme when German tanks entered Paris, and which mansion was added to the Musée Carnavalet in 1989?","expected_urls":["https://en.wikipedia.org/?curid=5208681","https://en.wikipedia.org/?curid=2026598"]}
+{"question":"I'm comparing public traditions in London. What religious requirement did City of London sheriffs have to meet, and where in Buckingham Palace are knighthoods usually awarded?","expected_urls":["https://en.wikipedia.org/?curid=467579","https://en.wikipedia.org/?curid=3969"]}
+{"question":"Have major European festivals been cancelled because of disease? Give one example from Oktoberfest and one from Romics.","expected_urls":["https://en.wikipedia.org/?curid=7688189","https://en.wikipedia.org/?curid=44307237"]}
+{"question":"What is the confirmation number for my hotel booking in Madrid?","expected_urls":[]}
