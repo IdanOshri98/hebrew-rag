@@ -10,3 +10,6 @@ wheels/
 .venv
 .env
 .venv/
+/data/raw/
+/data/clean/
+/eval/check_ask_run.txt

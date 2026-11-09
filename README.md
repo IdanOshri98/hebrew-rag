@@ -97,7 +97,7 @@ The code expects a `chunks` table and a `match_chunks` function. This schema mat
 ```sql
 create extension if not exists vector;
 
-create table chunks (
+create table public.chunks (
   id text primary key,
   text text not null,
   title text not null,
@@ -106,16 +106,16 @@ create table chunks (
   embedding vector(1536)
 );
 
-create index on chunks using hnsw (embedding vector_cosine_ops);
+create index on public.chunks using hnsw (embedding vector_cosine_ops);
 
-create or replace function match_chunks(query_embedding vector(1536), match_count int)
-returns table (id text, text text, title text, url text, section text, similarity float)
+create or replace function public.match_chunks(query_embedding vector(1536), match_count int)
+returns table (id text, text text, title text, url text, section text, distance double precision)
 language sql stable as $$
   select id, text, title, url, section,
-         1 - (embedding <=> query_embedding) as similarity
-  from chunks
-  order by embedding <=> query_embedding
-  limit match_count;
+         c.embedding <=> query_embedding as distance
+    from public.chunks as c
+    order by c.embedding <=> query_embedding
+    limit match_count;
 $$;
 ```
 
@@ -151,7 +151,7 @@ Unit tests replace the Anthropic client with a fake through FastAPI dependency o
 `eval/check_ask.py` is an end-to-end smoke check. It sends the 20 questions in `eval/golden.jsonl` to a running server and verifies the response contract: a non-empty answer, every answer has sources, sources have URLs, and a "no information" answer has no sources. The golden set includes single-article questions, multi-article questions and one out-of-scope question.
 
 ```bash
-uv run python eval/check_ask.py
+uv run python -X utf8 eval/check_ask.py
 ```
 
 Latest run: 20/20 pass the contract check. One quality note: question 16, a two-part question about Romics and Palazzo Massimo, returned "no information" although both source articles are in the index. This check validates the response format, not answer quality. Quality evaluation is the next milestone.
