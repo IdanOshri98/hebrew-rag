@@ -12,7 +12,9 @@ supabase = create_client(
     settings.supabase_key.get_secret_value(),
 )
 
-def retrieve(question, k=5):
+## מציאת קטעים
+## הפונקציה הופכת שאלה לוקטור ומוצאת את חמשת הקטעים בדאטה שהכי קרובים אליו
+def retrieve(question, k=5, include_usage=False):
     embedding_res = openai_client.embeddings.create(
         model="text-embedding-3-small",
         input=question,
@@ -29,9 +31,13 @@ def retrieve(question, k=5):
         },
     ).execute()
     
+    if include_usage:
+        return search_res.data, embedding_res.usage.total_tokens
+
     return search_res.data
 
-
+## מכינים את מה שקלוד יקרא
+## מקבלת שאלה ואת הקטעים שנשלפו ומחזירה מחרוזתת - הפרומפט. הפרומפט מכיל את ההוראות, השאלה ואת הקטעים ממוספרים.
 def build_prompt(question, chunks):
     sources = []
     
@@ -57,6 +63,20 @@ def build_prompt(question, chunks):
                 מקורות:
                 {context}
                 """
+                
+def generate_answer(question, chunks, llm):
+    res = llm.messages.create(
+        model="claude-haiku-4-5",
+        max_tokens=800,
+        messages=[{"role": "user", "content": build_prompt(question, chunks)}],        
+    )
+    
+    text_parts = [
+        block.text for block in res.content if block.type == "text"
+    ]
+    answer = "".join(text_parts).strip()
+    
+    return answer, res.usage
 
 if __name__ == "__main__":
     question = "Why was the Colosseum built and what was it used for?"

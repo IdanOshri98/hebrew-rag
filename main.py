@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from anthropic import Anthropic
 from settings import settings
-from retrieval import build_prompt, retrieve
+from retrieval import build_prompt, retrieve, generate_answer
 
 app = FastAPI()
 
@@ -196,7 +196,8 @@ def classify(msg: ChatRequest, req: Request, client: Anthropic = Depends(get_llm
 class AskRequest(BaseModel):
     question: str
 
-
+## מחברת בין השלבים - קוראת ובודקת את השאלה ואח"כ קוראת לretieve, build_prompt ושולחת את הפרומפט לקלוד
+## מחזירה תשובה ורשימת מקורות ורושמת בלוג את השימוש בתוקנים, עלות וזמן
 @app.post("/ask")
 def ask(body: AskRequest, req: Request, llm=Depends(get_llm)):
     started = time.perf_counter()
@@ -211,19 +212,7 @@ def ask(body: AskRequest, req: Request, llm=Depends(get_llm)):
     if not chunks:
         return {"answer": no_info, "sources":[]}
     
-    res = llm.messages.create(
-        model="claude-haiku-4-5",
-        max_tokens=800,
-        messages=[{"role": "user", "content": build_prompt(question, chunks)}],        
-    )
-    
-    text_parts = []
-
-    for block in res.content:
-        if block.type == "text":
-            text_parts.append(block.text)
-    
-    answer = "".join(text_parts).strip()
+    answer, usage = generate_answer(question, chunks, llm)
     
     sources = [
                 {"title": chunk["title"], "url": chunk["url"]}
@@ -233,9 +222,9 @@ def ask(body: AskRequest, req: Request, llm=Depends(get_llm)):
     logger.info(json.dumps({
         "request_id": req.state.request_id,
         "endpoint": "/ask",
-        "input_tokens": res.usage.input_tokens,
-        "output_tokens": res.usage.output_tokens,
-        "cost": cost(res.usage),
+        "input_tokens": usage.input_tokens,
+        "output_tokens": usage.output_tokens,
+        "cost": cost(usage),
         "latency_ms": round((time.perf_counter() - started) * 1000, 2),
     }))
     

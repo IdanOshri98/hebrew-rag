@@ -182,3 +182,16 @@ docs/data-notes.md    Data exploration and design decisions
 ## Tech stack
 
 Python · FastAPI · Pydantic · Anthropic Claude (Haiku 4.5) · OpenAI embeddings · Supabase Postgres + pgvector · tiktoken · pytest · uv
+
+## Evaluation baseline
+
+| Configuration | Recall@5 | MRR@5 | Answer accuracy | Avg. API cost/query | Avg. latency |
+|---|---:|---:|---:|---:|---:|
+| Direct vector search, top 5 | 50.0% | 0.458 | 16.3% (7/43) | $0.002782 | 2,861 ms |
+
+Retrieval metrics cover 60 questions with expected source URLs. Answer accuracy
+is the share of answers rated `correct` by the LLM judge among the 43 questions
+with reference answers. Cost and latency are averaged over all 62 queries and
+cover retrieval and answer generation. The judge runs separately.
+
+[Per-question results](results/baseline_full.jsonl)
